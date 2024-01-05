@@ -2,7 +2,7 @@ from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
 
 
-class SlackMessage:
+class Slack:
     def __init__(self, slack_token: str, slack_channel: str):
         self.token = slack_token
         self.channel = slack_channel
