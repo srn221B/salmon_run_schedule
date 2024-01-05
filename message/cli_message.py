@@ -11,11 +11,11 @@ TEMPLATE = (
     "支給ブキ・・・{{current_weapons_name}}\n"
     "（火力: {{hiryoku}}, 塗り: {{nuri}}, 機動力: {{kidou}}, 対雑魚: {{zako}}, 対タワー: {{tower}}, 対爆弾: {{bakudan}}, 耐柱: {{hashira}}）\n"
     "-----\n"
-    "*{{next_start_date}} - {{next_end_date}}*　ステージ: {{next_stage}}　偏差値: {{next_hyouka}}\n"
+    "{{next_start_date}} - {{next_end_date}}　ステージ: {{next_stage}}　偏差値: {{next_hyouka}}\n"
     "   支給ブキ: {{next_weapons_name}}\n"
     "   （火力: {{next_hiryoku}}, 塗り: {{next_nuri}}, 機動力: {{next_kidou}}, 対雑魚: {{next_zako}}, 対タワー: {{next_tower}}, 対爆弾: {{next_bakudan}}, 耐柱: {{next_hashira}}）\n"
     "-----\n"
-    "*{{next_next_start_date}} - {{next_next_end_date}}*　ステージ: {{next_next_stage}}　偏差値: {{next_next_hyouka}}\n"
+    "{{next_next_start_date}} - {{next_next_end_date}}　ステージ: {{next_next_stage}}　偏差値: {{next_next_hyouka}}\n"
     "   支給ブキ: {{next_next_weapons_name}}\n"
     "   （火力: {{next_next_hiryoku}}, 塗り: {{next_next_nuri}}, 機動力: {{next_next_kidou}}, 対雑魚: {{next_next_zako}}, 対タワー: {{next_next_tower}}, 対爆弾: {{next_next_bakudan}}, 耐柱: {{next_next_hashira}}）\n"
 )
