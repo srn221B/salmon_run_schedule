@@ -65,7 +65,7 @@ class SalmonAPIRawData:
 
     @property
     def end_time(self):
-        et_dt = datetime.fromisoformat(self._start_time)
+        et_dt = datetime.fromisoformat(self._end_time)
         return f"{et_dt.year}-{et_dt.month}-{et_dt.day} {et_dt.hour}:00"
 
     @property
