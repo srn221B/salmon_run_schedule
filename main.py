@@ -6,6 +6,7 @@ from typing import List
 from message.cli_message import CliMessage
 from message.message import MessageData
 from message.slack_message import SlackMessage
+from message.tweet_message import TweetMessage
 from notice.slack import Slack
 from salmon_api.salmon_api import SalmonAPI, SalmonAPIRawData
 
@@ -28,6 +29,7 @@ class SalmonApiRawDataToMessageData:
             current_weapons_name=", ".join(c_weapons.name_list),
             current_hyouka=current_data.get_deviation(int(sum(c_weapons.score_list) / len(c_weapons.score_list))),
             hiryoku=round(sum(c_weapons.hiryoku_list) / len(c_weapons.hiryoku_list), 1),
+            boss=current_data.boss,
             nuri=round(sum(c_weapons.nuri_list) / len(c_weapons.nuri_list), 1),
             kidou=round(sum(c_weapons.kidou_list) / len(c_weapons.kidou_list), 1),
             zako=round(sum(c_weapons.zako_list) / len(c_weapons.zako_list), 1),
@@ -38,6 +40,7 @@ class SalmonApiRawDataToMessageData:
             next_end_date=next_data.end_time,
             next_stage=next_data.stage,
             next_hyouka=next_data.get_deviation(int(sum(n_weapons.score_list) / len(n_weapons.score_list))),
+            next_boss=next_data.boss,
             next_hiryoku=round(sum(n_weapons.hiryoku_list) / len(n_weapons.hiryoku_list), 1),
             next_nuri=round(sum(n_weapons.nuri_list) / len(n_weapons.nuri_list), 1),
             next_kidou=round(sum(n_weapons.kidou_list) / len(n_weapons.kidou_list), 1),
@@ -51,6 +54,7 @@ class SalmonApiRawDataToMessageData:
             next_next_stage=next_next_data.stage,
             next_next_hyouka=next_next_data.get_deviation(int(sum(n_n_weapons.score_list) / len(n_n_weapons.score_list))),
             next_next_hiryoku=round(sum(n_n_weapons.hiryoku_list) / len(n_n_weapons.hiryoku_list), 1),
+            next_next_boss=next_next_data.boss,
             next_next_nuri=round(sum(n_n_weapons.nuri_list) / len(n_n_weapons.nuri_list), 1),
             next_next_kidou=round(sum(n_n_weapons.kidou_list) / len(n_n_weapons.kidou_list), 1),
             next_next_zako=round(sum(n_n_weapons.zako_list) / len(n_n_weapons.zako_list), 1),
@@ -63,7 +67,7 @@ class SalmonApiRawDataToMessageData:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("-t", "--type", help="通知先[slack or cli or all] 指定しない場合はall", default="all", type=str)
+    parser.add_argument("-t", "--type", help="通知先[slack or cli or tweet or all] 指定しない場合はall", default="all", type=str)
     args = parser.parse_args()
     notice_type = args.type
 
@@ -85,4 +89,8 @@ if __name__ == "__main__":
 
     if notice_type == "cli" or notice_type == "all":
         cli_message = CliMessage.create(message_data)
+        print(cli_message)
+
+    if notice_type == "tweet" or notice_type == "all":
+        cli_message = TweetMessage.create(message_data)
         print(cli_message)

@@ -61,12 +61,12 @@ class SalmonAPIRawData:
     @property
     def start_time(self):
         st_dt = datetime.fromisoformat(self._start_time)
-        return f"{st_dt.year}-{st_dt.month}-{st_dt.day} {st_dt.hour}:00"
+        return f"{st_dt.month}/{st_dt.day} {st_dt.hour}:00"
 
     @property
     def end_time(self):
         et_dt = datetime.fromisoformat(self._end_time)
-        return f"{et_dt.year}-{et_dt.month}-{et_dt.day} {et_dt.hour}:00"
+        return f"{et_dt.month}/{et_dt.day} {et_dt.hour}:00"
 
     @property
     def stage(self):
@@ -74,7 +74,7 @@ class SalmonAPIRawData:
 
     @property
     def boss(self) -> str:
-        return self._boss[0]["name"]
+        return self._boss["name"]
 
     @property
     def weapons(self) -> Weapons:
