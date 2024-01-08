@@ -8,6 +8,7 @@ class MessageData:
     current_stage: str
     current_weapons_name: str
     current_hyouka: int
+    boss: str
     hiryoku: float
     nuri: float
     kidou: float
@@ -19,6 +20,7 @@ class MessageData:
     next_end_date: str
     next_stage: str
     next_hyouka: int
+    next_boss: str
     next_hiryoku: float
     next_nuri: float
     next_kidou: float
@@ -31,6 +33,7 @@ class MessageData:
     next_next_end_date: str
     next_next_stage: str
     next_next_hyouka: int
+    next_next_boss: str
     next_next_hiryoku: float
     next_next_nuri: float
     next_next_kidou: float
