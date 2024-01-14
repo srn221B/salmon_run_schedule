@@ -19,51 +19,28 @@ WEAPON_INF_CSV_FILENAME = "weapon_inf.csv"
 
 class SalmonApiRawDataToMessageData:
     @staticmethod
-    def convert(raw_data: List[SalmonAPIRawData]) -> MessageData:
-        current_data, next_data, next_next_data = raw_data[0], raw_data[1], raw_data[2]
-        c_weapons, n_weapons, n_n_weapons = current_data.weapons, next_data.weapons, next_next_data.weapons
-        return MessageData(
-            current_start_date=current_data.start_time,
-            current_end_date=current_data.end_time,
-            current_stage=current_data.stage,
-            current_weapons_name=", ".join(c_weapons.name_list),
-            current_hyouka=current_data.get_deviation(int(sum(c_weapons.score_list) / len(c_weapons.score_list))),
-            hiryoku=round(sum(c_weapons.hiryoku_list) / len(c_weapons.hiryoku_list), 1),
-            boss=current_data.boss,
-            nuri=round(sum(c_weapons.nuri_list) / len(c_weapons.nuri_list), 1),
-            kidou=round(sum(c_weapons.kidou_list) / len(c_weapons.kidou_list), 1),
-            zako=round(sum(c_weapons.zako_list) / len(c_weapons.zako_list), 1),
-            tower=round(sum(c_weapons.tower_list) / len(c_weapons.tower_list), 1),
-            bakudan=round(sum(c_weapons.bakudan_list) / len(c_weapons.bakudan_list), 1),
-            hashira=round(sum(c_weapons.hashira_list) / len(c_weapons.hashira_list), 1),
-            next_start_date=next_data.start_time,
-            next_end_date=next_data.end_time,
-            next_stage=next_data.stage,
-            next_hyouka=next_data.get_deviation(int(sum(n_weapons.score_list) / len(n_weapons.score_list))),
-            next_boss=next_data.boss,
-            next_hiryoku=round(sum(n_weapons.hiryoku_list) / len(n_weapons.hiryoku_list), 1),
-            next_nuri=round(sum(n_weapons.nuri_list) / len(n_weapons.nuri_list), 1),
-            next_kidou=round(sum(n_weapons.kidou_list) / len(n_weapons.kidou_list), 1),
-            next_zako=round(sum(n_weapons.zako_list) / len(n_weapons.zako_list), 1),
-            next_tower=round(sum(n_weapons.tower_list) / len(n_weapons.tower_list), 1),
-            next_bakudan=round(sum(n_weapons.bakudan_list) / len(n_weapons.bakudan_list), 1),
-            next_hashira=round(sum(n_weapons.hashira_list) / len(n_weapons.hashira_list), 1),
-            next_weapons_name=", ".join(n_weapons.name_list),
-            next_next_start_date=next_next_data.start_time,
-            next_next_end_date=next_next_data.end_time,
-            next_next_stage=next_next_data.stage,
-            next_next_hyouka=next_next_data.get_deviation(int(sum(n_n_weapons.score_list) / len(n_n_weapons.score_list))),
-            next_next_hiryoku=round(sum(n_n_weapons.hiryoku_list) / len(n_n_weapons.hiryoku_list), 1),
-            next_next_boss=next_next_data.boss,
-            next_next_nuri=round(sum(n_n_weapons.nuri_list) / len(n_n_weapons.nuri_list), 1),
-            next_next_kidou=round(sum(n_n_weapons.kidou_list) / len(n_n_weapons.kidou_list), 1),
-            next_next_zako=round(sum(n_n_weapons.zako_list) / len(n_n_weapons.zako_list), 1),
-            next_next_tower=round(sum(n_n_weapons.tower_list) / len(n_n_weapons.tower_list), 1),
-            next_next_bakudan=round(sum(n_n_weapons.bakudan_list) / len(n_n_weapons.bakudan_list), 1),
-            next_next_hashira=round(sum(n_n_weapons.hashira_list) / len(n_n_weapons.hashira_list), 1),
-            next_next_weapons_name=", ".join(n_n_weapons.name_list),
-        )
-
+    def convert_message_data_list(raw_data_list: List[SalmonAPIRawData]) -> List[MessageData]:
+        message_data_list = []
+        for r in raw_data_list:
+            weapons = r.weapons
+            message_data_list.append(
+                MessageData(
+                    start_date= r.start_time,
+                    end_date=r.end_time,
+                    stage=r.stage,
+                    weapons_name=", ".join(weapons.name_list),
+                    hyouka=r.get_deviation(int(sum(weapons.score_list) / len(weapons.score_list))),
+                    boss=r.boss,
+                    hiryoku=round(sum(weapons.hiryoku_list) / len(weapons.hiryoku_list), 1),
+                    nuri=round(sum(weapons.nuri_list) / len(weapons.nuri_list), 1),
+                    kidou=round(sum(weapons.kidou_list) / len(weapons.kidou_list), 1),
+                    zako=round(sum(weapons.zako_list) / len(weapons.zako_list), 1),
+                    tower=round(sum(weapons.tower_list)/ len(weapons.tower_list), 1),
+                    bakudan=round(sum(weapons.bakudan_list) / len(weapons.bakudan_list), 1),
+                    hashira=round(sum(weapons.hashira_list) / len(weapons.hashira_list), 1)                    
+                )
+            )
+        return message_data_list
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -80,7 +57,7 @@ if __name__ == "__main__":
 
     salmon_api = SalmonAPI(SCRAPING_URL, weapon_inf_csv_filepath)
     salmon_api_raw_data = salmon_api.get_3days_raw_data()
-    message_data = SalmonApiRawDataToMessageData.convert(salmon_api_raw_data)
+    message_data = SalmonApiRawDataToMessageData.convert_message_data_list(salmon_api_raw_data)
 
     if notice_type == "slack" or notice_type == "all":
         slack_message = SlackMessage.create(message_data)
