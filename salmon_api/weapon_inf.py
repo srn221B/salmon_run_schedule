@@ -3,6 +3,8 @@ from dataclasses import dataclass
 
 import numpy as np
 
+class UnknownWeaponError(Exception):
+    pass
 
 @dataclass
 class WeaponInf:
@@ -19,11 +21,27 @@ class WeaponInf:
         return data
 
     def get_weapon_data(self, weapon_name: str) -> dict:
-        return self._data[weapon_name]
+        try:
+            return self._data[weapon_name]
+        except KeyError:
+            if weapon_name == 'ランダム':
+                median_score = np.median([int(d["score"]) for d in self._data.values()])
+                return {
+                    'name' : 'ランダム',
+                    'hi' : 3.5,
+                    'nuri' : 3.5,
+                    'kidou' : 3.5,
+                    'zako' : 3.5,
+                    'tower' : 3.5,
+                    'bakudan' : 3.5,
+                    'hashira' : 3.5,
+                    'score': median_score
+                }
+            raise UnknownWeaponError(f'weapon_name: {weapon_name}')
 
     def calculate_deviation(self, score: int) -> int:
-        np_scores = np.array([int(d["score"]) for d in self._data.values()])
-        mean = np.mean(np_scores)
-        std = np.std(np_scores)
+        array= [int(d["score"]) for d in self._data.values()]
+        mean = np.mean(array)
+        std = np.std(array)
         deviation = (score - mean) / std
         return int(50 + deviation * 10)
